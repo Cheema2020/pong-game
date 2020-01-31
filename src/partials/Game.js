@@ -23,8 +23,8 @@ export default class Game {
       paddle_height,
       paddle_gap,
       paddle_mid,
-      "ArrowUp",
-      "ArrowDown"
+      "w",
+      "s"
     );
     this.paddle2 = new Paddles(
       this.height,
@@ -32,8 +32,8 @@ export default class Game {
       paddle_height,
       right_gap,
       paddle_mid,
-      "w",
-      "s"
+      "ArrowUp",
+      "ArrowDown"
     );
     this.ball = new Ball(8, this.width, this.height);
     // let rect = document.createElementNS(SVG_NS, "circle");
