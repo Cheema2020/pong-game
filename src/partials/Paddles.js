@@ -7,7 +7,7 @@ export default class Paddles {
     this.height = height;
     this.x = x;
     this.y = y;
-    this.speed = 10;
+    this.speed = 20;
     this.score = 0;
 
     document.addEventListener("keydown", event => {
@@ -21,6 +21,24 @@ export default class Paddles {
           break;
       }
     });
+  }
+
+  getScore() {
+    return this.score;
+  }
+
+  increaseScore() {
+    this.score = this.score + 1;
+  }
+
+  getPaddlePosition() {
+    const position = {
+      top: this.y,
+      left: this.x,
+      bottom: this.y + this.height,
+      right: this.x + this.width
+    };
+    return position;
   }
 
   moveUp() {
