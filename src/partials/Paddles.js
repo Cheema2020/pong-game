@@ -35,6 +35,10 @@ export default class Paddles {
     this.score = this.score + 1;
   }
 
+  resetScore() {
+    this.score = 0;
+  }
+
   getPaddlePosition() {
     const position = {
       top: this.y,

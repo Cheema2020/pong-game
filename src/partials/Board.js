@@ -12,7 +12,7 @@ export default class Board {
     boardSvg.setAttributeNS(null, "y", 0);
     boardSvg.setAttributeNS(null, "width", this.width);
     boardSvg.setAttributeNS(null, "height", this.height);
-    boardSvg.setAttributeNS(null, "fill", "#353535");
+    boardSvg.setAttributeNS(null, "fill", "#00b300");
     svg.appendChild(boardSvg);
 
     let lineSvg = document.createElementNS(SVG_NS, "line");

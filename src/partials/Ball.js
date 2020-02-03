@@ -1,4 +1,10 @@
-import { SVG_NS } from "../settings";
+import {
+  SVG_NS,
+  paddle_gap,
+  max_score,
+  ball_radius_reduction_score
+} from "../settings";
+import Winner from "./Winner";
 import ping from "../../public/sounds/pong-01.wav";
 
 export default class Ball {
@@ -9,6 +15,7 @@ export default class Ball {
     this.direction = 1;
     this.pingSound = new Audio(ping);
     this.reset();
+    this.winner = new Winner(this.width / 50 - 150, 200, 30);
   }
 
   reset() {
@@ -21,17 +28,37 @@ export default class Ball {
     this.vx = (6 - Math.abs(this.vy)) * this.direction;
   }
 
-  wallCollision(paddle1, paddle2) {
+  wallCollision(svg, game, paddle1, paddle2) {
     if (this.y + this.radius >= this.boardHeight || this.y - this.radius <= 0) {
       this.vy = this.vy * -1;
     }
 
     if (this.x - this.radius >= this.boardWidth) {
       paddle1.increaseScore();
+
+      if (paddle1.getScore() == 5 || paddle2.getScore() == 5) {
+        this.radius = 7;
+      }
+
+      if (paddle1.getScore() == max_score) {
+        this.winner.render(svg);
+        game.paused = true;
+      }
+
       this.direction = -1;
       this.reset();
     } else if (this.x + this.radius <= 0) {
       paddle2.increaseScore();
+
+      if (paddle1.getScore() == 5 || paddle2.getScore() == 5) {
+        this.radius = 7;
+      }
+
+      if (paddle2.getScore() == max_score) {
+        this.winner.render(svg);
+        game.paused = true;
+      }
+
       this.direction = 1;
       this.reset();
     }
@@ -63,7 +90,7 @@ export default class Ball {
     this.y = this.y + this.vy;
   }
 
-  render(svg, paddle1, paddle2) {
+  render(svg, game, paddle1, paddle2) {
     const circleBall = document.createElementNS(SVG_NS, "circle");
     circleBall.setAttributeNS(null, "cx", this.x);
     circleBall.setAttributeNS(null, "cy", this.y);
@@ -71,7 +98,8 @@ export default class Ball {
     circleBall.setAttributeNS(null, "fill", "white");
     svg.appendChild(circleBall);
     this.ballMove();
-    this.wallCollision(paddle1, paddle2);
+    this.wallCollision(svg, game, paddle1, paddle2);
+
     this.paddleCollision(paddle1, paddle2);
   }
 }
